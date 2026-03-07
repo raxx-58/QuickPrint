@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickPrint - Instant Document Printing</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <i class="fas fa-print"></i>
+                    Quick<span>Print</span>
+                </div>
+                <div class="nav-links">
+                    <!-- <a href="#" class="btn btn-outline" id="nav-login">Login</a> -->
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <h1>Print Documents <br><span class="text-gold">Instantly</span></h1>
+            <p>Scan, upload, and print in seconds. No drivers needed. Secure and fast.</p>
+            <button class="btn" id="btn-scan-qr">
+                <i class="fas fa-qrcode"></i> Scan QR Code
+            </button>
+        </div>
+    </section>
+
+    <!-- How it Works -->
+    <section id="how-it-works">
+        <div class="container">
+            <div class="section-title">
+                <h2>How It Works</h2>
+                <p>Simple 3-step process to get your documents printed.</p>
+            </div>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="icon-box"><i class="fas fa-user-plus"></i></div>
+                    <h3>1. Sign Up</h3>
+                    <p>Create a quick account to secure your documents.</p>
+                </div>
+                <div class="step-card">
+                    <div class="icon-box"><i class="fas fa-credit-card"></i></div>
+                    <h3>2. Pay & Upload</h3>
+                    <p>Select options, pay securely, and upload your file.</p>
+                </div>
+                <div class="step-card">
+                    <div class="icon-box"><i class="fas fa-print"></i></div>
+                    <h3>3. Connect & Print</h3>
+                    <p>Enter the 4-digit ID on the printer to start.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modals (Hidden by default) -->
+    
+    <!-- 1. Sign Up Modal -->
+    <div class="modal-overlay" id="modal-signup">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Create Account</h2>
+            <form id="form-signup">
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" required placeholder="you@example.com">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" required placeholder="******">
+                </div>
+                <button type="submit" class="btn" style="width: 100%">Sign Up</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 2. Payment Modal -->
+    <div class="modal-overlay" id="modal-payment">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Select Plan</h2>
+            <div class="form-group">
+                <label>Copies</label>
+                <input type="number" id="pay-copies" value="1" min="1">
+            </div>
+            <div class="form-group">
+                <label>Color Mode</label>
+                <select id="pay-color">
+                    <option value="false">Black & White ($0.10/page)</option>
+                    <option value="true">Color ($0.50/page)</option>
+                </select>
+            </div>
+            <button id="btn-pay-details" class="btn" style="width: 100%">Proceed to Payment</button>
+        </div>
+    </div>
+
+    <!-- 2.5. QR Code Scanner Modal -->
+    <div class="modal-overlay" id="modal-scan-pay">
+        <div class="modal-content" style="max-width: 500px">
+            <span class="close-modal">&times;</span>
+            <h2>Scan to Pay</h2>
+            <p style="text-align: center; margin-bottom: 15px;">Scan the QR code on the kiosk</p>
+            <div class="scanner-container" style="position: relative; width: 100%; height: 300px; background: #000; overflow: hidden; border-radius: 8px;">
+                <video id="qr-video" style="width: 100%; height: 100%; object-fit: cover;"></video>
+                <div class="scan-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 2px solid #D4AF37; box-shadow: 0 0 0 100px rgba(0,0,0,0.5) inset;"></div>
+                <div class="scan-line" style="position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: #D4AF37; box-shadow: 0 0 4px #D4AF37; animation: scan 2s infinite;"></div>
+            </div>
+            <p id="scan-status" style="text-align: center; margin-top: 15px; font-weight: bold;">Initializing camera...</p>
+        </div>
+    </div>
+
+    <style>
+        @keyframes scan {
+            0% { top: 0; }
+            50% { top: 100%; }
+            100% { top: 0; }
+        }
+    </style>
+
+    <!-- 3. Upload Modal (Appears after Payment) -->
+    <div class="modal-overlay" id="modal-upload">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Upload Document</h2>
+            <div class="upload-zone" id="drop-zone">
+                <i class="fas fa-cloud-upload-alt" style="font-size: 3rem; color: #D4AF37; margin-bottom: 1rem;"></i>
+                <p>Drag & drop PDF here <br> or click to browse</p>
+                <input type="file" id="file-input" hidden accept=".pdf,.doc,.docx,.jpg,.png">
+            </div>
+            <button id="btn-upload" class="btn" style="width: 100%; margin-top: 20px;" disabled>Upload & Process</button>
+        </div>
+    </div>
+
+    <!-- 4. Printer Connection Modal -->
+    <div class="modal-overlay" id="modal-connect">
+        <div class="modal-content status-display">
+            <span class="close-modal">&times;</span>
+            <div id="connection-step-1">
+                <h2>Connect to Printer</h2>
+                <p>Enter this code on the QuickPrint kiosk screen:</p>
+                <div class="printer-code" id="access-code-display">---</div>
+                <p class="status-badge" id="job-status">Waiting for connection...</p>
+                <div style="margin-top: 20px; font-size: 0.9rem; color: #666;">
+                    Scanning for printer... <i class="fas fa-spinner fa-spin"></i>
+                </div>
+            </div>
+            <div id="connection-step-2" class="hidden">
+                 <i class="fas fa-check-circle" style="font-size: 4rem; color: #10B981; margin-bottom: 20px;"></i>
+                 <h2>Printing Started!</h2>
+                 <p>Your document is being printed.</p>
+                 <button class="btn btn-outline" onclick="location.reload()" style="margin-top: 20px;">Print Another</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+    {% csrf_token %}
+    <script>
+        const CSRF_TOKEN = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    </script>
+</body>
+</html>
